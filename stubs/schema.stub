@@ -1,0 +1,29 @@
+{{#expects provider}}
+{{{
+    exports({ to: app.makePath('schema.prisma')})
+}}}
+
+{{#if provider == 'postgresql'}}
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["driverAdapters"]
+}
+{{/if}}
+{{#if provider !== 'sqlite'}}
+datasource db {
+  provider = "{{provider}}"
+  url      = env("DATABASE_URL")
+}
+{{#elif}}
+datasource db {
+  provider = "{{provider}}"
+  url      = "file:./tmp/dev.db"
+}
+{{/if'}}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  password  String
+}

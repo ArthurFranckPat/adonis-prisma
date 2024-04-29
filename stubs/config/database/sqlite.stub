@@ -1,0 +1,21 @@
+{{{
+    exports({ to: app.configPath('prisma.ts')})
+}}}
+import env from '#start/env'
+import { defineConfig } from '@arthurfranckpat/adonis-prisma/src/define_config.js'
+
+const prismaConfig = defineConfig({
+    connection : 'sqlite',
+    connections : {
+        sqlite : {
+            filename:  app.tmpPath('dev.db')
+        }
+    }
+    auth : {
+        uids: ['email'],
+        passwordColumnName: 'password',
+    }
+ 
+})
+
+export default prismaConfig
