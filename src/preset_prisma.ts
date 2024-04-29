@@ -12,7 +12,7 @@ import { joinToURL } from '@poppinss/utils'
 import type { Application } from '@adonisjs/core/app'
 import type { Codemods } from '@adonisjs/core/ace/codemods'
 
-const STUBS_ROOT = joinToURL(import.meta.url, './stubs')
+export const STUBS_ROOT = joinToURL(import.meta.url, './stubs')
 
 /**
  * Collection of dialects that can be configured

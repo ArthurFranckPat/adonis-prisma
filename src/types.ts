@@ -10,3 +10,21 @@ export type PrismaConfigOptions = {
 }
 
 export type PrismaClient = ExtendedPrismaClient
+
+export type PrismaSeederConstructorContract = {
+  developmentOnly: boolean
+  new (): {
+    run(): Promise<void>
+  }
+}
+
+export interface PrismaSeederFile {
+  absolutePath: string
+  name: string
+  getSource: () => unknown
+}
+
+export abstract class PrismaSeederBase {
+  static developmentOnly: boolean
+  abstract run(): Promise<unknown>
+}
