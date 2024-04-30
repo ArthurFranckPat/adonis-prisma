@@ -1,15 +1,15 @@
 import { Hash } from '@adonisjs/core/hash'
 import { RuntimeException } from '@adonisjs/core/exceptions'
 import app from '@adonisjs/core/services/app'
-import hash from '@adonisjs/core/services/hash'
 import { E_INVALID_CREDENTIALS } from './errors.js'
 import { Prisma, PrismaClient } from '@prisma/client'
 import { PrismaConfigOptions } from './types.js'
+import hash from '@adonisjs/core/services/hash'
 
 const prisma = new PrismaClient()
 
 const withAuthFinder = (
-  hash: () => Hash,
+  _hash: () => Hash,
   options: {
     uids: string[]
     passwordColumnName: string
@@ -32,7 +32,7 @@ const withAuthFinder = (
               id: (user as any)[options.uids[0]],
             },
             data: {
-              [options.passwordColumnName]: await hash().make(
+              [options.passwordColumnName]: await _hash().make(
                 (user as any)[options.passwordColumnName]
               ),
             },
@@ -46,7 +46,7 @@ const withAuthFinder = (
 
           const user = await this.findForAuth(options.uids, uid)
           if (!user) {
-            await hash().make(password)
+            await _hash().make(password)
             throw new E_INVALID_CREDENTIALS('Invalid user credentials')
           }
 
@@ -57,7 +57,7 @@ const withAuthFinder = (
             )
           }
 
-          if (await hash().verify(passwordHash, password)) {
+          if (await _hash().verify(passwordHash, password)) {
             return user
           }
 

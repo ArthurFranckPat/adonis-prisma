@@ -1,5 +1,5 @@
-import { PrismaAuthConfigOptions } from './types.js'
+import { PrismaConfigOptions } from './types.js'
 
-export function defineConfig(config: PrismaAuthConfigOptions) {
+export function defineConfig(config: PrismaConfigOptions) {
   return config
 }

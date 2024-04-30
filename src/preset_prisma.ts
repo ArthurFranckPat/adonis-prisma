@@ -11,8 +11,11 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { joinToURL } from '@poppinss/utils'
 import type { Application } from '@adonisjs/core/app'
 import type { Codemods } from '@adonisjs/core/ace/codemods'
+import { CodeTransformer } from '@adonisjs/assembler/code_transformer'
+import { execPath } from 'node:process'
+import { execSync } from 'node:child_process'
 
-export const STUBS_ROOT = joinToURL(import.meta.url, './stubs')
+export const STUBS_ROOT = joinToURL(import.meta.url, '../stubs')
 
 /**
  * Collection of dialects that can be configured
@@ -116,7 +119,7 @@ export async function presetPrisma(
   const { pkgs, envVars, envValidations } = DIALECTS[options.dialect]
   const packagesToInstall = [
     ...pkgs!!,
-    { name: '@prisma/client', isDevDependency: false },
+    // { name: '@prisma/client', isDevDependency: false },
     { name: 'prisma', isDevDependency: true },
   ]
 
@@ -126,6 +129,9 @@ export async function presetPrisma(
     postgres: 'postgresql',
     mssql: 'sqlserver',
   }
+
+  // const transformer = new CodeTransformer(app.appRoot)
+  // transformer.installPackage()
 
   /**
    * Publish config file
@@ -182,6 +188,10 @@ export async function presetPrisma(
    */
   if (options.installPackages) {
     await codemods.installPackages(packagesToInstall)
+    // execSync(`npx prisma init --datasource-provider ${DIALECT_PROVIDER[options.dialect]}`, {
+    //   cwd: app.appRoot,
+    // }).toString()
+    execSync('npx prisma generate', { cwd: app.appRoot })
   } else {
     await codemods.listPackagesToInstall(packagesToInstall)
   }

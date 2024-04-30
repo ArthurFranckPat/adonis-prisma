@@ -25,6 +25,7 @@ export async function configure(command: ConfigureCommand) {
       'Select the database you want to use',
       Object.keys(DIALECTS),
       {
+        name: 'dialect',
         validate(value) {
           return !!value
         },
@@ -43,7 +44,10 @@ export async function configure(command: ConfigureCommand) {
 
   if (shouldInstallPackages === undefined) {
     shouldInstallPackages = await command.prompt.confirm(
-      'Do you want to install additional packages required by "@arthurfranckpat/adonis-prisma"?'
+      'Do you want to install additional packages required by "@arthurfranckpat/adonis-prisma"?',
+      {
+        name: 'shouldInstallPackages',
+      }
     )
   }
 

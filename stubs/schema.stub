@@ -1,6 +1,6 @@
-{{#expects provider}}
+{{#expect provider}}
 {{{
-    exports({ to: app.makePath('schema.prisma')})
+    exports({ to: app.makePath('prisma/schema.prisma')})
 }}}
 
 {{#if provider == 'postgresql'}}
@@ -9,17 +9,19 @@ generator client {
     previewFeatures = ["driverAdapters"]
 }
 {{/if}}
+
+
 {{#if provider !== 'sqlite'}}
 datasource db {
   provider = "{{provider}}"
   url      = env("DATABASE_URL")
 }
-{{#elif}}
+{{#else}}
 datasource db {
   provider = "{{provider}}"
   url      = "file:./tmp/dev.db"
 }
-{{/if'}}
+{{/if}}
 
 model User {
   id        Int      @id @default(autoincrement())

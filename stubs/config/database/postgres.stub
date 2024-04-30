@@ -14,7 +14,7 @@ const prismaConfig = defineConfig({
             user: env.get('DB_USER'),
             password: env.get('DB_PASSWORD')
         }
-    }
+    },
     auth : {
         uids: ['email'],
         passwordColumnName: 'password',

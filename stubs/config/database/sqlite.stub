@@ -10,7 +10,7 @@ const prismaConfig = defineConfig({
         sqlite : {
             filename:  app.tmpPath('dev.db')
         }
-    }
+    },
     auth : {
         uids: ['email'],
         passwordColumnName: 'password',
