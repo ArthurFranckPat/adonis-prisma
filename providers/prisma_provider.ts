@@ -15,14 +15,14 @@ export default class PrismaProvider {
    * Register bindings to the container
    */
   register() {
-    this.app.container.singleton('prisma:db', async () => {
+    this.app.container.singleton(PrismaClient, async () => {
       return extendedPrismaClient
     })
     // this.app.container.singleton(PrismaClient, async () => {
     //   const { PrismaClient } = await import('@prisma/client')
     //   return await new PrismaClient()
     // })
-    // this.app.container.alias('prisma:db', PrismaClient)
+    this.app.container.alias('prisma:db', PrismaClient)
   }
 
   /**

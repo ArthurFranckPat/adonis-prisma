@@ -6,7 +6,7 @@ type Users = {
   id: string | number
 }
 
-const db = await app.container.make('prisma')
+const db = await app.container.make('prisma:db')
 
 export class SessionPrismaUserProvider implements SessionUserProviderContract<Users> {
   declare [symbols.PROVIDER_REAL_USER]: Users

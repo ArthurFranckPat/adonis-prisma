@@ -17,6 +17,7 @@
     ".": "./build/index.js",
     "./types": "./build/src/types.js",
     "./prisma_provider": "./build/providers/prisma_provider.js",
+    "./prisma_service": "./build/src/prisma_service.js",
     "./prisma_user_provider": "./build/src/prisma_user_provider.js"
   },
   "scripts": {
