@@ -11,8 +11,6 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { joinToURL } from '@poppinss/utils'
 import type { Application } from '@adonisjs/core/app'
 import type { Codemods } from '@adonisjs/core/ace/codemods'
-import { CodeTransformer } from '@adonisjs/assembler/code_transformer'
-import { execPath } from 'node:process'
 import { execSync } from 'node:child_process'
 
 export const STUBS_ROOT = joinToURL(import.meta.url, '../stubs')

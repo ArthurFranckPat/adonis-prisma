@@ -23,7 +23,7 @@ export class SessionPrismaUserProvider implements SessionUserProviderContract<Us
   }
 
   async findById(identifier: string | number): Promise<SessionGuardUser<Users> | null> {
-    const user = await db.user.findFirst({
+    const user = await db.user.findUnique({
       where: { id: identifier },
     })
 

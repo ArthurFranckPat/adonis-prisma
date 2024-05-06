@@ -1,10 +1,9 @@
 import { ApplicationService } from '@adonisjs/core/types'
-import { extendedPrismaClient } from '../src/prisma_service.js'
-import { PrismaClient } from '@prisma/client'
+import { ExtendedPrismaClient, extendedPrismaClient } from '../src/prisma_service.js'
 
 declare module '@adonisjs/core/types' {
   interface ContainerBindings {
-    'prisma:db': PrismaClient
+    'prisma:db': ExtendedPrismaClient
   }
 }
 
@@ -15,14 +14,14 @@ export default class PrismaProvider {
    * Register bindings to the container
    */
   register() {
-    this.app.container.singleton(PrismaClient, async () => {
+    this.app.container.singleton('prisma:db', async () => {
       return extendedPrismaClient
     })
     // this.app.container.singleton(PrismaClient, async () => {
     //   const { PrismaClient } = await import('@prisma/client')
     //   return await new PrismaClient()
     // })
-    this.app.container.alias('prisma:db', PrismaClient)
+    // this.app.container.alias('prisma:db', PrismaClient)
   }
 
   /**

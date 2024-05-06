@@ -40,7 +40,7 @@ test.group('Configure', (group) => {
     await assert.fileContains('start/env.ts', 'DB_DATABASE: Env.schema.string()')
     await assert.fileContains('start/env.ts', 'DATABASE_URL: Env.schema.string()')
   })
-  test('Do not define env variables for dialect sqlite', async ({ assert, fs }) => {
+  test('Do not define env variables for dialect sqlite', async ({ assert }) => {
     const { ace } = await createFakeAdonisApp()
     ace.prompt.trap('dialect').replyWith('sqlite')
     ace.prompt.trap('shouldInstallPackages').reject()
@@ -56,7 +56,7 @@ test.group('Configure', (group) => {
     await assert.fileContains('config/prisma.ts', 'defineConfig({')
     assert.fileContains('prisma/schema.prisma', `model User {`)
   })
-  test('create temp dir for sqlite and dev.db file', async ({ assert, fs }) => {
+  test('create temp dir for sqlite and dev.db file', async ({ assert }) => {
     const { ace } = await createFakeAdonisApp()
     ace.prompt.trap('dialect').replyWith('sqlite')
     ace.prompt.trap('shouldInstallPackages').reject()
