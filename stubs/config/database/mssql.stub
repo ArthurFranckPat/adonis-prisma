@@ -2,7 +2,7 @@
     exports({ to: app.configPath('prisma.ts')})
 }}}
 import env from '#start/env'
-import { defineConfig } from '@arthurfranckpat/adonis-prisma/src/define_config.js'
+import { defineConfig } from '@arthurfranckpat/adonis-prisma'
 
 const prismaConfig = defineConfig({
     connection : 'mssql',
