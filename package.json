@@ -2,7 +2,7 @@
   "name": "@arthurfranckpat/adonis-prisma",
   "main": "./build/index.js",
   "description": "A Prisma Adapter for Adonis Js v6",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "node": ">=20.6.0"
   },
@@ -12,7 +12,9 @@
     "build/providers",
     "build/stubs",
     "build/index.d.ts",
-    "build/index.js"
+    "build/index.js",
+    "build/configure.d.ts",
+    "build/configure.js"
   ],
   "exports": {
     ".": "./build/index.js",
@@ -39,8 +41,12 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [],
-  "author": "",
+  "author": "ArthurFranckPat",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArthurFranckPat/adonis-prisma.git"
+  },
   "dependencies": {
     "@prisma/client": "^5.13.0",
     "prisma": "^5.13.0"
@@ -94,5 +100,11 @@
   "eslintConfig": {
     "extends": "@adonisjs/eslint-config/package"
   },
-  "prettier": "@adonisjs/prettier-config"
+  "prettier": "@adonisjs/prettier-config",
+  "outDir": "./build",
+  "clean": true,
+  "format": "esm",
+  "dts": false,
+  "sourcemap": true,
+  "target": "esnext"
 }
