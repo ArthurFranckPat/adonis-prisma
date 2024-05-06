@@ -43,5 +43,5 @@ test.group('Prisma Provider', (group) => {
     assert.isTrue(app.container.hasBinding('prisma:db'))
 
     assert.instanceOf(await app.container.make('prisma:db'), PrismaClient)
-  }).pin()
+  })
 })
