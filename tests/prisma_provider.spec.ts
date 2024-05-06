@@ -2,9 +2,7 @@ import { test } from '@japa/runner'
 import { createFakeAdonisApp, createFiles } from '../test-helpers/index.js'
 import Configure from '@adonisjs/core/commands/configure'
 import { defineConfig } from '../src/define_config.js'
-import { extendedPrismaClient } from '../src/prisma_service.js'
 import { PrismaClient } from '@prisma/client'
-import { mockDeep, mockReset, DeepMockProxy } from 'jest-mock-extended'
 
 test.group('Prisma Provider', (group) => {
   group.tap((t) => t.timeout(20_000))
@@ -34,7 +32,7 @@ test.group('Prisma Provider', (group) => {
         }),
       },
     })
-    // app.container.swap(PrismaClient, () => prismaMock)
+
     ace.prompt.trap('dialect').replyWith('postgres')
     ace.prompt.trap('shouldInstallPackages').accept()
     const command = await ace.create(Configure, ['../../index.js'])
@@ -42,14 +40,8 @@ test.group('Prisma Provider', (group) => {
 
     assert.fileExists('prisma/schema.prisma')
     assert.dirExists('node_modules/@prisma/client')
-    // mockDeep<PrismaClient>()
-    const { PrismaClient: FakePrismaClient } = await import('@prisma/client')
-    app.container.swap(PrismaClient, PrismaClient)
     assert.isTrue(app.container.hasBinding('prisma:db'))
-    const prisma = await app.container.make('prisma:db')
-    console.log(prisma)
-    assert.instanceOf(await app.container.make('prisma:db'), FakePrismaClient)
-  })
-})
 
-// const prisma = await app.container.make('prisma')
+    assert.instanceOf(await app.container.make('prisma:db'), PrismaClient)
+  }).pin()
+})

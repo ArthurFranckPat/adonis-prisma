@@ -7,7 +7,6 @@ import { PrismaConfigOptions } from './types.js'
 import hash from '@adonisjs/core/services/hash'
 
 const prisma = new PrismaClient()
-
 const withAuthFinder = (
   _hash: () => Hash,
   options: {

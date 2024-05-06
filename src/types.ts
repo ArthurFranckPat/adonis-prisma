@@ -62,10 +62,3 @@ type MsSqlConfig = {
   password: string
   database: string
 }
-
-// connection : 'sqlite',
-//     connections : {
-//         sqlite : {
-//             filename:  app.tmpPath('dev.db')
-//         }
-//     },

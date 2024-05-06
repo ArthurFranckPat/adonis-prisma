@@ -1,11 +1,9 @@
 import { ApplicationService } from '@adonisjs/core/types'
-import { ExtendedPrismaClient, extendedPrismaClient } from '../src/prisma_service.js'
-import { execSync } from 'child_process'
+import { extendedPrismaClient } from '../src/prisma_service.js'
 import { PrismaClient } from '@prisma/client'
 
 declare module '@adonisjs/core/types' {
   interface ContainerBindings {
-    // prisma: ExtendedPrismaClient
     'prisma:db': PrismaClient
   }
 }
@@ -17,21 +15,20 @@ export default class PrismaProvider {
    * Register bindings to the container
    */
   register() {
-    this.app.container.singleton(PrismaClient, async () => {
-      const { PrismaClient } = await import('@prisma/client')
-      return new PrismaClient()
+    this.app.container.singleton('prisma:db', async () => {
+      return extendedPrismaClient
     })
-
-    this.app.container.alias('prisma:db', PrismaClient)
-    console.log('registered')
+    // this.app.container.singleton(PrismaClient, async () => {
+    //   const { PrismaClient } = await import('@prisma/client')
+    //   return await new PrismaClient()
+    // })
+    // this.app.container.alias('prisma:db', PrismaClient)
   }
 
   /**
    * The container bindings have booted
    */
-  async boot() {
-    console.log('booted')
-  }
+  async boot() {}
 
   /**
    * The application has been booted
@@ -47,7 +44,7 @@ export default class PrismaProvider {
    * Preparing to shutdown the app
    */
   async shutdown() {
-    this.app.container.resolving('prisma', (prisma) => {
+    this.app.container.resolving('prisma:db', (prisma) => {
       return prisma.$disconnect()
     })
   }
