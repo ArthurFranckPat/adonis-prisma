@@ -3,14 +3,14 @@
 {{#var fileName = string(name).snakeCase().suffix('_seeder').ext('.ts')}}
 
 {{{
-    exports({ to: app.makePath('prisma/seeders')})
+    exports({ to: app.makePath(`prisma/seeders/${fileName}`)})
 }}}
 
 import { PrismaSeederBase } from '@arthurfranckpat/adonis-prisma/types'
-import app from '@adonisjs/core/services/app
+import app from '@adonisjs/core/services/app'
 
 const prisma = await app.container.make('prisma:db')
-export default class {{ fileName }}Seeder extends PrismaSeederBase {
+export default class {{ string(name).pascalCase() }}Seeder extends PrismaSeederBase {
   static developmentOnly = {{ developmentOnly }}
 
   async run() {

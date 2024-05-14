@@ -3,12 +3,11 @@
     exports({ to: app.makePath('prisma/schema.prisma')})
 }}}
 
-{{#if provider == 'postgresql'}}
 generator client {
     provider        = "prisma-client-js"
     previewFeatures = ["driverAdapters"]
 }
-{{/if}}
+
 
 
 {{#if provider !== 'sqlite'}}

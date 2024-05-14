@@ -24,13 +24,15 @@ export async function createFakeAdonisApp(args: {} = {}) {
   await app.boot()
 
   const ace = await app.container.make('ace')
-  //   ace.ui.switchMode('raw')
+  ace.ui.switchMode('normal')
 
   return { app, ace }
 }
 
 export async function createFiles(fs: FileSystem) {
-  await fs.createJson('package.json', {})
+  await fs.createJson('package.json', {
+    type: 'module',
+  })
   await fs.createJson('tsconfig.json', {})
   await fs.create('adonisrc.ts', `export default defineConfig({})`)
   await fs.create(

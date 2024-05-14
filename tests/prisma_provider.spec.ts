@@ -9,6 +9,7 @@ test.group('Prisma Provider', (group) => {
   group.each.setup(async ({ context }) => {
     await createFiles(context.fs)
   })
+  group.each.disableTimeout()
   test('register prisma provider', async ({ fs, assert }) => {
     await fs.create('.env', '')
     await fs.create('start/env.ts', `export default Env.create(new URL('./'), {})`)

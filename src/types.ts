@@ -18,10 +18,15 @@ export type PrismaSeederConstructorContract = {
   }
 }
 
-export interface PrismaSeederFile {
-  absolutePath: string
+export type PrismaSeederFile<T> = {
+  absPath: string
   name: string
-  getSource: () => unknown
+  getSource: () => T | Promise<T>
+}
+export type PrismaSeederStatus = {
+  status: 'pending' | 'completed' | 'failed' | 'ignored'
+  error?: any
+  file: PrismaSeederFile<unknown>
 }
 
 export abstract class PrismaSeederBase {
