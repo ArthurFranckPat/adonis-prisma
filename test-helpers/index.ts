@@ -1,6 +1,9 @@
 import { IgnitorFactory } from '@adonisjs/core/factories'
 import { Logger } from '@adonisjs/core/logger'
+import { ApplicationService } from '@adonisjs/core/types'
 import { FileSystem } from '@japa/file-system'
+import { execa } from 'execa'
+import { PrismaSeeder } from '../src/prisma_seeder.js'
 
 export const BASE_URL = new URL('./tmp/', import.meta.url)
 export const logger = new Logger({})
@@ -48,4 +51,86 @@ export async function createFiles(fs: FileSystem) {
       server.use([])
     `
   )
+}
+
+export async function createFilesWithPrisma(fs: FileSystem) {
+  await createFiles(fs)
+  // await fs.create('.env')
+  // await fs.create('database/dev.db', '')
+  await fs.create(
+    'prisma/schema.prisma',
+    `
+  datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+  }
+  generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["driverAdapters"]
+}
+
+  model User {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    email     String   @unique
+    password  String
+    name      String
+  }
+  `
+  )
+}
+
+export async function setupDatabaseForTest(fs: FileSystem, cwd: string) {
+  await fs.create(
+    '.env',
+    'DATABASE_URL="postgresql://postgres:postgres@localhost:5432/prisma?connect_timeout=3000&pool_timeout=30&socket_timeout=30"'
+  )
+
+  await execa({ cwd })`npx prisma db push --force-reset`
+  await execa({ cwd })`npx prisma db push`
+}
+
+export async function fakeSeederFile(fs: FileSystem) {
+  await fs.create(
+    'prisma/seeders/user_seeder.ts',
+    `
+    import { PrismaClient } from '@prisma/client'
+    
+  const prisma = new PrismaClient()
+  export default class UserSeeder {
+    async run() {
+      
+      await prisma.user.createMany({
+        data: [
+          {
+            name: 'John Doe',
+            email: 'C9Ykz@example.com',
+            password: '123456',
+          },
+          {
+            name: 'Jane Doe',
+            email: 'C10Ykz@example.com',
+            password: '123456',
+          },
+          {
+            name: 'Jack Doe',
+            email: 'C11Ykz@example.com',
+            password: '123456',
+          },
+        ]
+      })
+
+      
+      console.log('db seeded')
+
+    }
+  }
+  `
+  )
+}
+
+export async function seedDatabase(app: ApplicationService) {
+  const seeder = new PrismaSeeder(app)
+  const files = await seeder.getList()
+  return seeder.run(files[0])
 }

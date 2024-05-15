@@ -2,7 +2,7 @@ import { test } from '@japa/runner'
 import { createFakeAdonisApp, createFiles } from '../test-helpers/index.js'
 import Configure from '@adonisjs/core/commands/configure'
 import { defineConfig } from '../src/define_config.js'
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 
 test.group('Prisma Provider', (group) => {
   group.tap((t) => t.timeout(20_000))

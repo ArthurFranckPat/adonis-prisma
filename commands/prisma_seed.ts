@@ -1,16 +1,8 @@
-import { BaseCommand, args } from '@adonisjs/core/ace'
+import { BaseCommand } from '@adonisjs/core/ace'
 import { PrismaSeederFile, PrismaSeederStatus } from '../src/types.js'
 
 export class PrismaSeed extends BaseCommand {
   static commandName: 'prisma:seed'
-
-  // @args.string({
-  //   parse(input) {
-  //     return `${input.toLowerCase()}_seeder.ts`
-  //   },
-  // })
-  // declare fileName: string
-
   #printLogMessage(file: PrismaSeederStatus) {
     const colors = this.colors
 
@@ -56,12 +48,12 @@ export class PrismaSeed extends BaseCommand {
       this.exitCode = 1
       return
     }
-    let hasError = false
+    // let hasError = false
 
     for (let file of files) {
       const response = await seeder.run(file)
       if (response.status === 'failed') {
-        hasError = true
+        // hasError = true
       }
       this.#printLogMessage(response)
     }

@@ -1,7 +1,7 @@
 import { isScriptFile, fsReadAll, slash } from '@poppinss/utils'
 import { extname, join } from 'node:path'
-import { pathToFileURL } from 'node:url'
-import { fileURLToPath } from 'url'
+import { pathToFileURL, fileURLToPath } from 'node:url'
+
 import { PrismaSeederFile } from './types.js'
 
 export async function sourceFiles(

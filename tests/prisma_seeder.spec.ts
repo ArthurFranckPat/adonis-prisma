@@ -1,25 +1,29 @@
 import { test } from '@japa/runner'
-import { createFakeAdonisApp, createFiles } from '../test-helpers/index.js'
+import {
+  createFakeAdonisApp,
+  createFiles,
+  createFilesWithPrisma,
+  fakeSeederFile,
+  seedDatabase,
+  setupDatabaseForTest,
+} from '../test-helpers/index.js'
 import { PrismaSeeder } from '../src/prisma_seeder.js'
 
 test.group('Prisma Seeder', (group) => {
-  group.tap((t) => t.timeout(20_000))
+  group.each.disableTimeout()
   group.each.setup(async ({ context }) => {
     await createFiles(context.fs)
   })
-  group.each.teardown(async ({ context }) => {
-    await context.fs.cleanup()
-  })
-  test('register prisma seeder command', async ({ fs, assert, cleanup }) => {
-    const { ace } = await createFakeAdonisApp({})
-    // ace.ui.switchMode('raw')
+
+  test('register prisma seeder command', async ({ fs, assert }) => {
+    await createFakeAdonisApp({})
     await fs.create(
       'prisma/seeders/user_seeder.ts',
       `
-      
+
     export default class UserSeeder {
       static developmentOnly = true
-    
+
       async run() {
         // Write your database queries inside the run method
       }
@@ -29,21 +33,16 @@ test.group('Prisma Seeder', (group) => {
 
     await assert.fileExists('prisma/seeders/user_seeder.ts')
     await assert.fileContains('prisma/seeders/user_seeder.ts', `export default class UserSeeder`)
-
-    // cleanup(() => {
-    //   fs.remove('prisma/seeders/user_seeder.ts')
-    // })
   })
   test('run prisma seeder command', async ({ fs, assert }) => {
-    const { ace, app } = await createFakeAdonisApp({})
-    // ace.ui.switchMode('raw')
+    const { app } = await createFakeAdonisApp({})
     await fs.create(
       'prisma/seeders/user_seeder.ts',
       `
-      
+
     export default class UserSeeder {
       static developmentOnly = true
-    
+
       async run() {
         // Write your database queries inside the run method
       }
@@ -56,7 +55,7 @@ test.group('Prisma Seeder', (group) => {
       `
     export default class PostSeeder {
       static developmentOnly = false
-    
+
       async run() {
         // Write your database queries inside the run method
       }
@@ -75,13 +74,12 @@ test.group('Prisma Seeder', (group) => {
   })
 
   test('It completes seeder file in production mode', async ({ fs, assert }) => {
-    const { ace, app } = await createFakeAdonisApp({})
-    // ace.ui.switchMode('raw')
+    const { app } = await createFakeAdonisApp({})
 
     await fs.create(
       'prisma/seeders/user_seeder.ts',
       `
-      
+
     export default class UserSeeder {
       static developmentOnly = false
       static invoked = false
@@ -91,10 +89,7 @@ test.group('Prisma Seeder', (group) => {
     }
     `
     )
-    const seeder = new PrismaSeeder(app)
-    const files = await seeder.getList()
-
-    const report = await seeder.run(files[0])
+    const report = await seedDatabase(app)
     const fileSource = await report.file.getSource()
 
     assert.equal((fileSource as any)['invoked'], true)
@@ -102,13 +97,12 @@ test.group('Prisma Seeder', (group) => {
   })
 
   test('catch and return seeder errors', async ({ fs, assert }) => {
-    const { ace, app } = await createFakeAdonisApp({})
-    // ace.ui.switchMode('raw')
+    const { app } = await createFakeAdonisApp({})
 
     await fs.create(
       'prisma/seeders/user_seeder.ts',
       `
-      
+
     export default class UserSeeder {
       async run() {
         throw new Error('Failed')
@@ -117,11 +111,28 @@ test.group('Prisma Seeder', (group) => {
     `
     )
 
-    const seeder = new PrismaSeeder(app)
-    const files = await seeder.getList()
-
-    const report = await seeder.run(files[0])
+    const report = await seedDatabase(app)
     assert.equal(report.status, 'failed')
     assert.exists(report.error)
+  })
+
+  test('Check if database is seeded', async ({ assert, fs }) => {
+    const { app } = await createFakeAdonisApp({
+      rcFileContents: {
+        providers: [() => import('../test-helpers/fake_provider.js')],
+      },
+    })
+
+    await createFilesWithPrisma(fs)
+    await setupDatabaseForTest(fs, app.makePath())
+    await fakeSeederFile(fs)
+    const report = await seedDatabase(app)
+
+    assert.equal(report.status, 'completed')
+
+    const prisma = await app.container.make('prisma:db')
+    const users = await prisma.user.findMany()
+
+    assert.equal(users.length, 3)
   })
 })

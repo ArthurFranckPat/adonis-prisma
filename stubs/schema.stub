@@ -18,7 +18,7 @@ datasource db {
 {{#else}}
 datasource db {
   provider = "{{provider}}"
-  url      = "file:./tmp/dev.db"
+  url      = "file:../tmp/dev.db"
 }
 {{/if}}
 

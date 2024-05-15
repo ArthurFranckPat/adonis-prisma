@@ -2,9 +2,10 @@ import { Hash } from '@adonisjs/core/hash'
 import { RuntimeException } from '@adonisjs/core/exceptions'
 import app from '@adonisjs/core/services/app'
 import { E_INVALID_CREDENTIALS } from './errors.js'
-import { Prisma, PrismaClient } from '@prisma/client'
 import { PrismaConfigOptions } from './types.js'
 import hash from '@adonisjs/core/services/hash'
+
+const { Prisma, PrismaClient } = async () => (await import('@prisma/client')).default
 
 const prisma = new PrismaClient()
 const withAuthFinder = (
@@ -24,6 +25,7 @@ const withAuthFinder = (
             },
           })
         },
+        
 
         async hashPassword(user: any) {
           return prisma.user.update({
