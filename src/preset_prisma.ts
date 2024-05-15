@@ -158,7 +158,7 @@ export async function presetPrisma(
    */
   await codemods.updateRcFile((rcFile) => {
     //TODO : create prisma commands wrapper
-    // rcFile.addCommand('@arthurfranckpat/adonis-prisma/commands')
+    rcFile.addCommand('@arthurfranckpat/adonis-prisma/commands')
     rcFile.addProvider('@arthurfranckpat/adonis-prisma/prisma_provider')
   })
 
