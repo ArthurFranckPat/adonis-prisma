@@ -86,8 +86,12 @@ export async function setupDatabaseForTest(fs: FileSystem, cwd: string) {
     'DATABASE_URL="postgresql://postgres:postgres@localhost:5432/prisma?connect_timeout=3000&pool_timeout=30&socket_timeout=30"'
   )
 
-  await execa({ cwd })`npx prisma db push --force-reset`
+  // await execa({ cwd })`npx prisma migrate dev`
   await execa({ cwd })`npx prisma db push`
+}
+
+export async function cleanupDatabase(cwd: string) {
+  await execa({ cwd })`npx prisma migrate reset --skip-generate --force`
 }
 
 export async function fakeSeederFile(fs: FileSystem) {

@@ -1,9 +1,9 @@
 import { ApplicationService } from '@adonisjs/core/types'
-import { PrismaClient } from '@prisma/client'
+import type { PrismaClient } from '@prisma/client'
 
 declare module '@adonisjs/core/types' {
   interface ContainerBindings {
-    'prisma:db': PrismaClient
+    'prisma:db:fake': PrismaClient
   }
 }
 
@@ -14,7 +14,7 @@ export default class FakePrismaProvider {
    * Register bindings to the container
    */
   register() {
-    this.app.container.singleton('prisma:db', async () => {
+    this.app.container.singleton('prisma:db:fake', async () => {
       const { PrismaClient } = await import('@prisma/client')
       return new PrismaClient()
     })
@@ -39,7 +39,7 @@ export default class FakePrismaProvider {
    * Preparing to shutdown the app
    */
   async shutdown() {
-    this.app.container.resolving('prisma:db', (prisma) => {
+    this.app.container.resolving('prisma:db:fake', (prisma) => {
       return prisma.$disconnect()
     })
   }

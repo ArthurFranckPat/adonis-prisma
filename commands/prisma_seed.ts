@@ -52,9 +52,9 @@ export class PrismaSeed extends BaseCommand {
 
     for (let file of files) {
       const response = await seeder.run(file)
-      if (response.status === 'failed') {
-        // hasError = true
-      }
+      // if (response.status === 'failed') {
+      //   hasError = true
+      // }
       this.#printLogMessage(response)
     }
   }

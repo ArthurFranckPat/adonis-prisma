@@ -2,7 +2,7 @@
   "name": "@arthurfranckpat/adonis-prisma",
   "main": "./build/index.js",
   "description": "A Prisma Adapter for Adonis Js v6",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "node": ">=20.6.0"
   },
@@ -10,6 +10,7 @@
   "files": [
     "build/src",
     "build/providers",
+    "build/commands",
     "build/stubs",
     "build/index.d.ts",
     "build/index.js",
@@ -58,6 +59,7 @@
     "@japa/assert": "^2.1.0",
     "@japa/file-system": "^2.3.0",
     "@japa/runner": "^3.1.1",
+    "@poppinss/utils": "^6.7.3",
     "@prisma/adapter-pg": "^5.14.0",
     "@prisma/client": "^5.14.0",
     "@swc/core": "^1.4.6",

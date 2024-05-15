@@ -1,5 +1,6 @@
 import { test } from '@japa/runner'
 import {
+  cleanupDatabase,
   createFakeAdonisApp,
   createFiles,
   createFilesWithPrisma,
@@ -116,7 +117,7 @@ test.group('Prisma Seeder', (group) => {
     assert.exists(report.error)
   })
 
-  test('Check if database is seeded', async ({ assert, fs }) => {
+  test('Check if database is seeded', async ({ assert, fs, cleanup }) => {
     const { app } = await createFakeAdonisApp({
       rcFileContents: {
         providers: [() => import('../test-helpers/fake_provider.js')],
@@ -134,5 +135,7 @@ test.group('Prisma Seeder', (group) => {
     const users = await prisma.user.findMany()
 
     assert.equal(users.length, 3)
-  })
+
+    cleanup(async () => await cleanupDatabase(app.makePath()))
+  }).pin()
 })
