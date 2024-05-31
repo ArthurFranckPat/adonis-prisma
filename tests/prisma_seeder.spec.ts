@@ -22,12 +22,16 @@ test.group('Prisma Seeder', (group) => {
     const { app: sApp } = await createFakeAdonisApp({})
     app = sApp
   })
+
   test('Check if database is seeded', async ({ assert, fs, cleanup }) => {
-    const { app: sApp } = await createFakeAdonisApp({
-      rcFileContents: {
-        providers: [() => import('../test-helpers/fake_provider.js')],
+    const { app: sApp } = await createFakeAdonisApp(
+      {
+        rcFileContents: {
+          providers: [() => import('../test-helpers/fake_provider.js')],
+        },
       },
-    })
+      'console'
+    )
 
     await createFilesWithPrisma(fs)
     await setupDatabaseForTest(fs, sApp.makePath())
@@ -38,11 +42,13 @@ test.group('Prisma Seeder', (group) => {
     const prisma = await sApp.container.make('prisma:db')
     const users = await prisma.user.findMany()
 
+    assert.equal(sApp.getEnvironment(), 'console')
+    assert.equal(sApp.getState(), 'ready')
     assert.equal(report.status, 'completed')
     assert.equal(users.length, 3)
 
     cleanup(async () => await cleanupDatabase(sApp.makePath()))
-  }).skip()
+  })
   test('register prisma seeder command', async ({ fs, assert }) => {
     await fs.create(
       'prisma/seeders/user_seeder.ts',

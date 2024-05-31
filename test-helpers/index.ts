@@ -4,11 +4,12 @@ import { ApplicationService } from '@adonisjs/core/types'
 import { FileSystem } from '@japa/file-system'
 import { execa } from 'execa'
 import { PrismaSeeder } from '../src/prisma_seeder.js'
+import { AppEnvironments } from '@adonisjs/core/types/app'
 
 export const BASE_URL = new URL('./tmp/', import.meta.url)
 export const logger = new Logger({})
 
-export async function createFakeAdonisApp(args: {} = {}) {
+export async function createFakeAdonisApp(args: {} = {}, env: AppEnvironments = 'web') {
   const ignitor = new IgnitorFactory()
     .merge(args)
     .withCoreProviders()
@@ -22,7 +23,7 @@ export async function createFakeAdonisApp(args: {} = {}) {
         return import(filePath)
       },
     })
-  const app = ignitor.createApp('web')
+  const app = ignitor.createApp(env)
   await app.init()
   await app.boot()
 
@@ -55,8 +56,6 @@ export async function createFiles(fs: FileSystem) {
 
 export async function createFilesWithPrisma(fs: FileSystem) {
   await createFiles(fs)
-  // await fs.create('.env')
-  // await fs.create('database/dev.db', '')
   await fs.create(
     'prisma/schema.prisma',
     `
@@ -87,9 +86,7 @@ export async function setupDatabaseForTest(fs: FileSystem, cwd: string) {
   )
 
   // await execa({ cwd })`npx prisma migrate dev`
-  const out = await execa({ cwd })`npx prisma db push`
-  // console.log(cwd)
-  // console.log(out)
+  await execa({ cwd })`npx prisma db push`
 }
 
 export async function cleanupDatabase(cwd: string) {
@@ -106,7 +103,7 @@ export async function fakeSeederFile(fs: FileSystem) {
 
   import app from '@adonisjs/core/services/app'
   const prisma = await app.container.make('prisma:db')
-  //console.log(prisma)
+
   
   export default class UserSeeder {
     async run() {

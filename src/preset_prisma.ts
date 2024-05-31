@@ -12,6 +12,7 @@ import { joinToURL } from '@poppinss/utils'
 import type { Application } from '@adonisjs/core/app'
 import type { Codemods } from '@adonisjs/core/ace/codemods'
 import { execSync } from 'node:child_process'
+import { execa } from 'execa'
 
 export const STUBS_ROOT = joinToURL(import.meta.url, '../stubs')
 
@@ -183,10 +184,7 @@ export async function presetPrisma(
    */
   if (options.installPackages) {
     await codemods.installPackages(packagesToInstall)
-    // execSync(`npx prisma init --datasource-provider ${DIALECT_PROVIDER[options.dialect]}`, {
-    //   cwd: app.appRoot,
-    // }).toString()
-    execSync('npx prisma generate', { cwd: app.appRoot })
+    await execa('npx prisma generate', { cwd: app.appRoot })
   } else {
     await codemods.listPackagesToInstall(packagesToInstall)
   }

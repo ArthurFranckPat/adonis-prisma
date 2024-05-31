@@ -1,8 +1,33 @@
 import { BaseCommand } from '@adonisjs/core/ace'
 import { PrismaSeederFile, PrismaSeederStatus } from '../src/types.js'
+import { CommandOptions } from '@adonisjs/core/types/ace'
 
-export class PrismaSeed extends BaseCommand {
-  static commandName: 'prisma:seed'
+export default class PrismaSeed extends BaseCommand {
+  static commandName = 'prisma:seed'
+  static options: CommandOptions = {
+    startApp: true,
+  }
+
+  async run() {
+    const { PrismaSeeder } = await import('../src/prisma_seeder.js')
+    const seeder = new PrismaSeeder(this.app)
+    let files: PrismaSeederFile<unknown>[] = []
+    try {
+      files = await seeder.getList()
+    } catch (error) {
+      this.logger.error(error)
+      this.exitCode = 1
+      return
+    }
+
+    for (let file of files) {
+      const response = await seeder.run(file)
+      this.#printLogMessage(response)
+    }
+  }
+
+  async completed() {}
+
   #printLogMessage(file: PrismaSeederStatus) {
     const colors = this.colors
 
@@ -36,28 +61,4 @@ export class PrismaSeed extends BaseCommand {
       console.log(`  ${colors[color](prefix)}`)
     }
   }
-
-  async run() {
-    const { PrismaSeeder } = await import('../src/prisma_seeder.js')
-    const seeder = new PrismaSeeder(this.app)
-    let files: PrismaSeederFile<unknown>[] = []
-    try {
-      files = await seeder.getList()
-    } catch (error) {
-      this.logger.error(error)
-      this.exitCode = 1
-      return
-    }
-    // let hasError = false
-
-    for (let file of files) {
-      const response = await seeder.run(file)
-      // if (response.status === 'failed') {
-      //   hasError = true
-      // }
-      this.#printLogMessage(response)
-    }
-  }
-
-  async completed() {}
 }

@@ -27,6 +27,10 @@ configure({
       name: 'provider',
       files: ['tests/prisma_provider.spec.js'],
     },
+    {
+      name: 'unit',
+      files: ['tests/unit/**/*.spec.(js|ts)'],
+    },
   ],
 })
 
