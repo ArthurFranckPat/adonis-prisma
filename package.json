@@ -2,7 +2,7 @@
   "name": "@arthurfranckpat/adonis-prisma",
   "main": "./build/index.js",
   "description": "A Prisma Adapter for Adonis Js v6",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "node": ">=20.6.0"
   },
