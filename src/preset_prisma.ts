@@ -183,7 +183,7 @@ export async function presetPrisma(
    */
   if (options.installPackages) {
     await codemods.installPackages(packagesToInstall)
-    await execa('npx prisma generate', { cwd: app.appRoot })
+    await execa('npx prisma db push', { cwd: app.appRoot })
   } else {
     await codemods.listPackagesToInstall(packagesToInstall)
   }
