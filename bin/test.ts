@@ -13,6 +13,21 @@ configure({
     activated: ['spec'],
     list: [reporters.spec(), reporters.ndjson(), reporters.dot()],
   },
+
+  suites: [
+    {
+      name: 'configure',
+      files: ['tests/configure.spec.js'],
+    },
+    {
+      name: 'seeder',
+      files: ['tests/prisma_seeder.spec.js'],
+    },
+    {
+      name: 'provider',
+      files: ['tests/prisma_provider.spec.js'],
+    },
+  ],
 })
 
 run()

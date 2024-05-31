@@ -128,9 +128,6 @@ export async function presetPrisma(
     mssql: 'sqlserver',
   }
 
-  // const transformer = new CodeTransformer(app.appRoot)
-  // transformer.installPackage()
-
   /**
    * Publish config file
    */

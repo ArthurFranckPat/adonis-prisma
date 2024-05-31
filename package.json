@@ -2,7 +2,7 @@
   "name": "@arthurfranckpat/adonis-prisma",
   "main": "./build/index.js",
   "description": "A Prisma Adapter for Adonis Js v6",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "node": ">=20.6.0"
   },
@@ -17,6 +17,7 @@
     "build/configure.d.ts",
     "build/configure.js"
   ],
+
   "exports": {
     ".": "./build/index.js",
     "./types": "./build/src/types.js",
@@ -34,12 +35,13 @@
     "quick:test": "node --import=./tsnode.esm.js --enable-source-maps bin/test.ts",
     "pretest": "npm run lint",
     "test": "c8 npm run quick:test",
-    "prebuild": "npm run lint && npm run clean",
-    "build": "tsc",
-    "postbuild": "npm run copy:templates",
+    "compile": "npm run lint && npm run clean && tsc",
+    "postcompile": "npm run copy:templates && npm run index:commands",
+    "build": "npm run compile",
     "release": "np",
     "version": "npm run build",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "index:commands": "adonis-kit index build/commands"
   },
   "keywords": [],
   "author": "ArthurFranckPat",

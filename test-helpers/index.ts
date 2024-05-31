@@ -87,7 +87,9 @@ export async function setupDatabaseForTest(fs: FileSystem, cwd: string) {
   )
 
   // await execa({ cwd })`npx prisma migrate dev`
-  await execa({ cwd })`npx prisma db push`
+  const out = await execa({ cwd })`npx prisma db push`
+  // console.log(cwd)
+  // console.log(out)
 }
 
 export async function cleanupDatabase(cwd: string) {
@@ -98,9 +100,14 @@ export async function fakeSeederFile(fs: FileSystem) {
   await fs.create(
     'prisma/seeders/user_seeder.ts',
     `
-    import { PrismaClient } from '@prisma/client'
-    
-  const prisma = new PrismaClient()
+    //import { PrismaClient } from '@prisma/client'
+    //const prisma = new PrismaClient()
+
+
+  import app from '@adonisjs/core/services/app'
+  const prisma = await app.container.make('prisma:db')
+  //console.log(prisma)
+  
   export default class UserSeeder {
     async run() {
       
