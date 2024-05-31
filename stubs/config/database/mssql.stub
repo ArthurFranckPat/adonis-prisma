@@ -18,6 +18,7 @@ const prismaConfig = defineConfig({
     auth : {
         uids: ['email'],
         passwordColumnName: 'password',
+        sanitizePassword: true,
     }
  
 })

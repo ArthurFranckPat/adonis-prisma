@@ -2,7 +2,7 @@
   "name": "@arthurfranckpat/adonis-prisma",
   "main": "./build/index.js",
   "description": "A Prisma Adapter for Adonis Js v6",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "engines": {
     "node": ">=20.6.0"
   },
@@ -24,6 +24,7 @@
     "./commands": "./build/commands/main.js",
     "./prisma_provider": "./build/providers/prisma_provider.js",
     "./prisma_service": "./build/src/prisma_service.js",
+    "./helpers": "./build/src/helpers.js",
     "./prisma_user_provider": "./build/src/prisma_user_provider.js",
     "./prisma_seeder": "./build/src/prisma_seeder.js"
   },

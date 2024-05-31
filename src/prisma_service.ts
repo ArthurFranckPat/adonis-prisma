@@ -11,6 +11,7 @@ const withAuthFinder = (
   options: {
     uids: string[]
     passwordColumnName: string
+    sanitizePassword: boolean
   }
 ) =>
   Prisma.defineExtension({
@@ -77,7 +78,38 @@ const withAuthFinder = (
           }
           return query(args)
         },
+
+        async findFirst({ args, query }) {
+          const user = await query(args)
+          if (options.sanitizePassword) delete user?.password
+          return user
+        },
+        async findFirstOrThrow({ args, query }) {
+          const user = await query(args)
+          if (options.sanitizePassword) delete user.password
+          return user
+        },
+        async findUnique({ args, query }) {
+          const user = await query(args)
+          if (options.sanitizePassword) delete user?.password
+          return user
+        },
+        async findUniqueOrThrow({ args, query }) {
+          const user = await query(args)
+          if (options.sanitizePassword) delete user.password
+          return user
+        },
+        async findMany({ args, query }) {
+          const users = await query(args)
+          users.forEach((user) => {
+            if (options.sanitizePassword) delete user.password
+          })
+          return users
+        },
       },
+    },
+    result: {
+      user: {},
     },
   })
 

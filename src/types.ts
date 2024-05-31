@@ -3,6 +3,7 @@ import type { ExtendedPrismaClient } from './prisma_service.js'
 export interface PrismaAuthConfigOptions {
   uids: string[]
   passwordColumnName: string
+  sanitizePassword: boolean
 }
 
 export type PrismaConfigOptions = DialectConfig & {
