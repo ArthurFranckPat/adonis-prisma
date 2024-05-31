@@ -11,7 +11,6 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { joinToURL } from '@poppinss/utils'
 import type { Application } from '@adonisjs/core/app'
 import type { Codemods } from '@adonisjs/core/ace/codemods'
-import { execa } from 'execa'
 
 export const STUBS_ROOT = joinToURL(import.meta.url, '../stubs')
 
@@ -32,7 +31,7 @@ export const DIALECTS: {
   },
   mysql: {
     name: 'MySQL',
-    // pkgs: [{ name: 'mssql2', isDevDependency: false }],
+    pkgs: [{ name: 'mssql2', isDevDependency: false }],
     envVars: {
       DB_HOST: '127.0.0.1',
       DB_PORT: 3306,
@@ -75,7 +74,7 @@ export const DIALECTS: {
   },
   mssql: {
     name: 'MS SQL',
-    // pkgs: [{ name: 'tedious', isDevDependency: false }],
+    pkgs: [{ name: 'tedious', isDevDependency: false }],
     envVars: {
       DB_HOST: '127.0.0.1',
       DB_PORT: 1433,
@@ -101,10 +100,6 @@ export const DIALECTS: {
  * steps.
  *
  * - Creates config/database.ts file.
- * - Registers lucid commands and provider.
- * - Define env variables and their validations (if any)
- * - Creates tmp directory to store sqlite database file
- * - Installs required packages if(options.installPackages === true)
  */
 export async function presetPrisma(
   codemods: Codemods,
@@ -115,11 +110,7 @@ export async function presetPrisma(
   }
 ) {
   const { pkgs, envVars, envValidations } = DIALECTS[options.dialect]
-  const packagesToInstall = [
-    ...pkgs!!,
-    // { name: '@prisma/client', isDevDependency: false },
-    { name: 'prisma', isDevDependency: true },
-  ]
+  const packagesToInstall = [...pkgs!!, { name: 'prisma', isDevDependency: true }]
 
   const DIALECT_PROVIDER = {
     sqlite: 'sqlite',
@@ -183,7 +174,6 @@ export async function presetPrisma(
    */
   if (options.installPackages) {
     await codemods.installPackages(packagesToInstall)
-    await execa('npx prisma db push', { cwd: app.appRoot })
   } else {
     await codemods.listPackagesToInstall(packagesToInstall)
   }
