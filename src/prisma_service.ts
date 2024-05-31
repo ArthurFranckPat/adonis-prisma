@@ -4,7 +4,6 @@ import app from '@adonisjs/core/services/app'
 import { E_INVALID_CREDENTIALS } from './errors.js'
 import { PrismaConfigOptions } from './types.js'
 import hash from '@adonisjs/core/services/hash'
-// const { Prisma, PrismaClient } = async () => await import('@prisma/client')
 import { Prisma, PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 const withAuthFinder = (
@@ -61,6 +60,22 @@ const withAuthFinder = (
           }
 
           throw new E_INVALID_CREDENTIALS('Invalid user credentials')
+        },
+      },
+    },
+
+    query: {
+      user: {
+        async create({ args, query }) {
+          args.data = { ...args.data, password: await _hash().make(args.data.password) }
+          return query(args)
+        },
+        async update({ args, query }) {
+          args.data = {
+            ...args.data,
+            password: args.data.password && (await _hash().make(args.data.password as string)),
+          }
+          return query(args)
         },
       },
     },
