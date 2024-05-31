@@ -29,6 +29,7 @@ test.group('Prisma Provider', (group) => {
           auth: {
             uids: ['email'],
             passwordColumnName: 'password',
+            sanitizePassword: true,
           },
         }),
       },
