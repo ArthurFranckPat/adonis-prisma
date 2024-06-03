@@ -1,10 +1,21 @@
-# AdonisJS package starter kit
+#Adonis JS 6 Prisma Adapter
 
-> A boilerplate for creating AdonisJS packages
+This package is useful if you want to give a try to PrismaJS within Adonis JS 6
 
-This repo provides you with a starting point for creating AdonisJS packages. Of course, you can create a package from scratch with your folder structure and workflow. However, using this starter kit can speed up the process, as you have fewer decisions to make.
+## Getting Started
 
-## Setup
+### Prerequisites
+This package relies on ```@adonisjs/auth``` with #Session Provider
+
+### Installation
+
+ ```sh
+  npm install @arthurfranckpat/adonis-prisma
+    or
+  yarn install @arthurfranckpat/adonis-prisma
+    or
+  pnpm add @arthurfranckpat/adonis-prisma
+  ```
 
 - Clone the repo on your computer, or use `giget` to download this repo without the Git history.
   ```sh
