@@ -29,23 +29,27 @@ After installation, you should run the proper commands to migrate your schema :
   npx prisma generate
   ```
 
-## Folder structure
+## Usage
 
-The starter kit mimics the folder structure of the official packages. Feel free to rename files and folders as per your requirements.
+You have two options to use the Prisma Client.
+First,via Adonis IoC Container :
 
 ```
-├── providers
-├── src
-├── bin
-├── stubs
-├── configure.ts
-├── index.ts
-├── LICENSE.md
-├── package.json
-├── README.md
-├── tsconfig.json
-├── tsnode.esm.js
+const prisma = await app.container.make('prisma:db')
 ```
+
+Or by destructuring ``HttpContext``object : 
+```
+//route.ts
+
+router
+  .get('/', async function ({ view, prisma }: HttpContext) {
+    ...
+    const posts = await prisma.post.findMany())
+    ...
+  })
+```
+
 
 - The `configure.ts` file exports the `configure` hook to configure the package using the `node ace configure` command.
 - The `index.ts` file is the main entry point of the package.
