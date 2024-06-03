@@ -17,7 +17,7 @@ This package relies on ```@adonisjs/auth``` with ``Session Provider``
   pnpm add @arthurfranckpat/adonis-prisma
   ```
 
-- Then configure the package via :
+Then configure the package via :
   ```sh
   node ace configure @arthurfranckpat/adonis-prisma
   ```
@@ -28,8 +28,6 @@ After installation, you should run the proper commands to migrate your schema :
 ```sh
   npx prisma generate
   ```
-- Update the `package.json` file and define the `name`, `description`, `keywords`, and `author` properties.
-- The repo is configured with an MIT license. Feel free to change that if you are not publishing under the MIT license.
 
 ## Folder structure
 
