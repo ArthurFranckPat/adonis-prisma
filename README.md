@@ -63,7 +63,7 @@ Then, you should replace the `provider` key in the `config/auth.ts` file with th
       })
 ```
 
-After that, you can use the provided methods to facilitate the authentication flow. Like, the `@adonisjs/lucid`, there is two methods for authentication (NB : these methods are available only with `user` model : 
+After that, you can use the provided methods to facilitate the authentication flow. Like, the `@adonisjs/lucid`, there is two methods for authentication (***NB*** : these methods are available only with `user` model : 
 - To verify user credentials, you can use this method : ` const user = await prisma.user.verifyCredentials('email', 'password')`
 
 
@@ -82,7 +82,8 @@ node ace prisma:make-provider <name_of_the_seeder>
 It will create a seeder file inside the `prisma/seeders` directory.
 
 Then, to seed the database you should run :
-`node ace prisma:seed` command. Note: This command runs all the seeders files inside `prisma/seeders` directory.
+`node ace prisma:seed` command. 
+***NB***: This command runs all the seeders files inside `prisma/seeders` directory.
 
 
 ## Before leaving...
