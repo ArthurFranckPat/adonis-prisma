@@ -8,11 +8,8 @@ This package is useful if you want to give a try to PrismaJS within Adonis JS 6.
 
  ```sh
   npm install @arthurfranckpat/adonis-prisma
-    or
-  yarn install @arthurfranckpat/adonis-prisma
-    or
-  pnpm add @arthurfranckpat/adonis-prisma
   ```
+You should use your favorite package manager.
 
 Then configure the package via :
   ```sh
