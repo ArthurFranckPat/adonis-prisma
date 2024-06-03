@@ -43,23 +43,14 @@ Or by destructuring ``HttpContext``object :
 //route.ts
 
 router
-  .get('/', async function ({ view, prisma }: HttpContext) {
+  .get('/', async function ({ prisma }: HttpContext) {
     ...
     const posts = await prisma.post.findMany())
     ...
   })
 ```
 
-
-- The `configure.ts` file exports the `configure` hook to configure the package using the `node ace configure` command.
-- The `index.ts` file is the main entry point of the package.
-- The `tsnode.esm.js` file runs TypeScript code using TS-Node + SWC. Please read the code comment in this file to learn more.
-- The `bin` directory contains the entry point file to run Japa tests.
-- Learn more about [the `providers` directory](./providers/README.md).
-- Learn more about [the `src` directory](./src/README.md).
-- Learn more about [the `stubs` directory](./stubs/README.md).
-
-### File system naming convention
+### Authentication
 
 We use `snake_case` naming conventions for the file system. The rule is enforced using ESLint. However, turn off the rule and use your preferred naming conventions.
 
