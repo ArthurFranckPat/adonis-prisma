@@ -1,4 +1,4 @@
-#Adonis JS 6 Prisma Adapter
+# Adonis JS 6 Prisma Adapter
 
 This package is useful if you want to give a try to PrismaJS within Adonis JS 6.
 
