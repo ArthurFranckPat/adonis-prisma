@@ -18,7 +18,7 @@ Then configure the package via :
   This command will scaffold the config files, providers and create a prisma folder with ``prisma.schema`` file.
 
 ### Post Installation
-After installation, you should run the proper commands to migrate your schema :
+After installation, you should run the proper commands to migrate your schema and/or generate the Prisma Client :
 ```sh
   npx prisma generate
   ```
