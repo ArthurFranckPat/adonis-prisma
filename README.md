@@ -5,7 +5,7 @@ This package is useful if you want to give a try to PrismaJS within Adonis JS 6
 ## Getting Started
 
 ### Prerequisites
-This package relies on ```@adonisjs/auth``` with #Session Provider
+This package relies on ```@adonisjs/auth``` with ##Session Provider
 
 ### Installation
 
