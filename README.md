@@ -86,7 +86,7 @@ After that, you can use the provided methods to facilitate the authentication fl
 You can define seeders for your DB with the following command :
 
 ```sh
-node ace prisma:make-provider <name_of_the_seeder>
+node ace prisma:make-seeder <name_of_the_seeder>
 ```
 
 It will create a seeder file inside the `prisma/seeders` directory.
